@@ -1,5 +1,5 @@
 from flask import Flask, request, send_file
-from rembg import remove
+from rembg import remove, new_session
 from io import BytesIO
 from PIL import Image
 
@@ -18,7 +18,7 @@ def process_image():
     input_bytes = file.read()
 
     # Remove background
-    output_bytes = remove(input_bytes)
+    output_bytes = remove(input_bytes, session=new_session("u2netp"))
 
     img = Image.open(BytesIO(output_bytes)).convert("RGBA")
     buf = BytesIO()
