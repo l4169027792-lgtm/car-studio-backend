@@ -3,3 +3,4 @@ gunicorn
 rembg
 Pillow
 onnxruntime
+streamlit
