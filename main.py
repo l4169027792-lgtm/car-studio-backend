@@ -1,7 +1,9 @@
-from flask import Flask, request, send_file
-from rembg import remove, new_session
 from io import BytesIO
+
+from flask import Flask, request, send_file
 from PIL import Image
+
+from image_utils import image_to_bytes, remove_background_from_bytes
 
 app = Flask(__name__)
 
@@ -18,11 +20,8 @@ def process_image():
     input_bytes = file.read()
 
     # Remove background
-    output_bytes = remove(input_bytes, session=new_session("u2netp"))
-
-    img = Image.open(BytesIO(output_bytes)).convert("RGBA")
-    buf = BytesIO()
-    img.save(buf, format="PNG")
+    img = remove_background_from_bytes(input_bytes)
+    buf = BytesIO(image_to_bytes(img))
     buf.seek(0)
 
     return send_file(buf, mimetype="image/png")
